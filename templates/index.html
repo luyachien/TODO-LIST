@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 讓表單內容置中對齊 */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .success-message {
+            display: none;
+            color: #28a745; /* 綠色文字 */
+            font-weight: bold;
+            animation: fadeInOut 3s ease;
+        }
+        @keyframes fadeInOut {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            10%, 90% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 表單容器 -->
+    <div class="form-container">
+        <h1>To-Do List</h1>
+        <form id="taskForm" action="/add_task" method="post">
+            <!-- 輸入框 -->
+            <div class="mb-3">
+                <input type="text" name="task" class="form-control" placeholder="What to do?" required>
+            </div>
+            <!-- 時間選擇 -->
+            <div class="mb-3">
+                <input type="datetime-local" name="due_time" class="form-control" required>
+            </div>
+            <!-- 儲存按鈕 -->
+            <button type="submit" class="btn btn-primary w-100 mb-3">Add Task</button>
+        </form>
+        <!-- 成功提示 -->
+        <div id="successMessage" class="text-center success-message">Task Added Successfully!</div>
+        <!-- 分頁按鈕 -->
+        <div class="d-flex justify-content-between">
+            <button onclick="location.href='/list'" class="btn btn-secondary">List</button>
+            <button onclick="location.href='/history'" class="btn btn-secondary">History</button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 偵測表單提交成功後顯示動畫
+        document.getElementById('taskForm').addEventListener('submit', function (event) {
+            // 停止默認的表單提交行為
+            event.preventDefault();
+
+            // 顯示成功訊息
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+
+            // 隱藏成功訊息並提交表單
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+                this.submit();
+            }, 1500); // 3 秒後自動提交表單
+        });
+    </script>
+</body>
+</html>

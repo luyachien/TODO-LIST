@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uncompleted Tasks</title>
+    <!-- 引入 Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa; /* 淺灰背景 */
+        }
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-info {
+            flex: 1;
+        }
+        .task-time {
+            font-size: 0.9rem;
+            color: #6c757d; /* 灰色文字 */
+        }
+        .btn-complete {
+            margin-left: 10px;
+            border: 2px solid #007bff; /* 藍色方框 */
+            background-color: transparent; /* 無背景色 */
+            color: #007bff; /* 藍色文字 */
+            font-size: 1rem;
+            padding: 5px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease; /* 平滑過渡效果 */
+        }
+        .btn-complete:hover {
+            background-color: #007bff; /* 滑鼠懸停時填充藍色 */
+            color: #ffffff; /* 文字變白 */
+        }
+        .btn-complete:active {
+            background-color: #0056b3; /* 點擊時深藍 */
+            color: #ffffff;
+        }
+        .btn-complete.clicked {
+            background-color: #007bff; /* 點擊後填充藍色 */
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Uncompleted Tasks</h1>
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    <!-- 顯示時間和事項 -->
+                    <div class="task-info">
+                        <span class="task-time">{{ task['formatted_due_time'] }}</span> / {{ task['task'] }}
+                    </div>
+                    <!-- 勾選按鈕 -->
+                    <form action="/complete_task/{{ task['id'] }}" method="post" class="task-form">
+                        <button type="button" class="btn btn-complete btn-sm">　</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+        <!-- 返回首頁按鈕 -->
+        <div class="text-center mt-4">
+            <button onclick="location.href='/'" class="btn btn-secondary">Back to Home</button>
+        </div>
+    </div>
+
+    <!-- 引入 Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 點擊按鈕後執行動畫和延遲提交
+        document.querySelectorAll('.btn-complete').forEach(button => {
+            button.addEventListener('click', function () {
+                const form = this.closest('form');
+                // 添加 "checked" 樣式
+                this.classList.add('checked');
+                // 延遲 0.5 秒提交表單
+                setTimeout(() => {
+                    form.submit();
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>
